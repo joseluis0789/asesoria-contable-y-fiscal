@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYA | Asesoría Contable y Fiscal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#0A192F',
+                            light: '#112240',
+                            dark: '#020C1B',
+                            glass: 'rgba(10, 25, 47, 0.55)'
+                        },
+                        mustard: {
+                            DEFAULT: '#D4AF37',
+                            light: '#E6C200',
+                            dark: '#AA8800',
+                            glow: 'rgba(212, 175, 55, 0.4)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    animation: {
+                        'kenburns': 'kenburns 25s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        kenburns: {
+                            '0%': { transform: 'scale(1) translate(0, 0)' },
+                            '100%': { transform: 'scale(1.12) translate(-1%, -1%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4' },
+                            '50%': { opacity: '0.8' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Tipografía y suavizado de Apple */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #020C1B;
+            color: #F3F4F6;
+        }
+
+        /* Glassmorphism de Apple con alta transparencia */
+        .apple-glass {
+            background: rgba(10, 25, 47, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .apple-glass-card {
+            background: rgba(10, 25, 47, 0.50);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .apple-glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 20px 40px -10px rgba(212, 175, 55, 0.25);
+            transform: translateY(-4px);
+        }
+
+        /* Contenedor circular emblemático de Apple para el Logo */
+        .logo-circle-container {
+            background: #FFFFFF;
+            border: 2px solid rgba(212, 175, 55, 0.7);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3), inset 0 0 5px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .logo-circle-container:hover {
+            transform: scale(1.08);
+            border-color: #D4AF37;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+        }
+
+        /* ANIMACIONES Y TRANSICIONES DINÁMICAS Y FLUIDAS (0.85s / GPU-ACCELERATED) */
+        .nav-collapsible {
+            transition: max-width 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                        padding 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: max-width, padding;
+        }
+
+        .nav-links-container {
+            transition: max-width 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+            max-width: 650px;
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            overflow: hidden;
+            white-space: nowrap;
+            will-change: max-width, opacity, transform;
+        }
+
+        /* Animación suave para las palabras individuales conforme se abre el menú */
+        .nav-link-item {
+            display: inline-block;
+            transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            transition-delay: calc(var(--item-index, 0) * 0.05s + 0.1s);
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            will-change: opacity, transform;
+        }
+
+        /* Estado Colapsado */
+        nav.collapsed .nav-links-container {
+            max-width: 0px !important;
+            opacity: 0 !important;
+            transform: translate3d(-10px, 0, 0);
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none;
+        }
+
+        nav.collapsed .nav-link-item {
+            opacity: 0 !important;
+            transform: translate3d(-8px, 0, 0) scale(0.95);
+            transition-delay: 0s;
+        }
+
+        /* Expansión ultra-fluida en Hover */
+        nav.collapsed:hover .nav-links-container {
+            max-width: 650px !important;
+            opacity: 1 !important;
+            transform: translate3d(0, 0, 0);
+            pointer-events: auto;
+        }
+
+        nav.collapsed:hover .nav-link-item {
+            opacity: 1 !important;
+            transform: translate3d(0, 0, 0) scale(1);
+            transition-delay: calc(var(--item-index, 0) * 0.06s + 0.15s);
+        }
+
+        /* Efectos de brillo en degradado estilo Apple */
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F3E5AB 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Sombra para legibilidad sobre imágenes */
+        .text-shadow-hero {
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.85);
+        }
+
+        .tab-content {
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-100 overflow-x-hidden selection:bg-mustard selection:text-navy-dark">
+
+    <!-- BOTÓN FLOTANTE PARA SUBIR RÁPIDO (BACK TO TOP) -->
+    <button id="backToTopBtn" 
+            onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+            aria-label="Volver arriba"
+            class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full apple-glass border border-mustard/60 text-mustard flex items-center justify-center shadow-2xl opacity-0 pointer-events-none transition-all duration-500 hover:scale-110 hover:bg-mustard hover:text-navy-dark">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <!-- NAV BAR FLOTANTE DINÁMICA ESTILO APPLE -->
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 py-3 flex justify-center pointer-events-none">
+        <nav id="mainNav" class="pointer-events-auto nav-collapsible apple-glass rounded-full px-5 py-2.5 flex items-center justify-between shadow-2xl gap-4 max-w-6xl w-full">
+            
+            <!-- CONTENEDOR LOGO + NOMBRE -->
+            <a href="#inicio" class="flex items-center gap-3 group shrink-0">
+                <div class="logo-circle-container w-11 h-11 rounded-full flex items-center justify-center p-1.5 overflow-hidden">
+                    <img id="logo-img" 
+                         src="Imagen1conta_2.png" 
+                         onerror="if (this.src.indexOf('Imagen1conta.png') === -1) { this.src='Imagen1conta.png'; } else { this.style.display='none'; document.getElementById('svg-fallback-logo').classList.remove('hidden'); }" 
+                         alt="SYA Logo" 
+                         class="w-full h-full object-contain" />
+                    
+                    <div id="svg-fallback-logo" class="hidden flex items-center justify-center">
+                        <svg class="w-7 h-7" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 50 C5 35 15 15 35 15 C55 15 45 45 25 50 C10 55 15 70 35 70 C45 70 55 60 55 50" stroke="#0A192F" stroke-width="9" stroke-linecap="round"/>
+                            <path d="M35 25 L60 65 L80 15" stroke="#0A192F" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M50 65 L70 35 L90 65" stroke="#D4AF37" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <span class="font-bold text-lg tracking-tight text-white hidden sm:inline">SYA <span class="text-mustard font-medium text-xs tracking-widest uppercase block sm:inline">Asesoría</span></span>
+            </a>
+
+            <!-- ENLACES DE NAVEGACIÓN DESPLEGABLES -->
+            <div class="nav-links-container hidden md:flex items-center gap-8 text-sm font-bold text-gray-100">
+                <a href="#inicio" class="nav-link-item hover:text-mustard transition-colors duration-300" style="--item-index: 1;">Inicio</a>
+                <a href="#servicios" class="nav-link-item hover:text-mustard transition-colors duration-300" style="--item-index: 2;">Servicios</a>
+                <a href="#nosotros" class="nav-link-item hover:text-mustard transition-colors duration-300" style="--item-index: 3;">Nosotros</a>
+                <a href="#precios" class="nav-link-item hover:text-mustard transition-colors duration-300" style="--item-index: 4;">Precios</a>
+                <a href="#cotizador" class="nav-link-item hover:text-mustard transition-colors duration-300" style="--item-index: 5;">Cotizador</a>
+            </div>
+
+            <!-- BOTÓN CONTACTO -->
+            <a href="https://wa.me/528712876149" target="_blank" class="shrink-0 bg-mustard hover:bg-mustard-light text-navy-dark px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-300 hover:shadow-lg hover:shadow-mustard/30">
+                Contacto
+            </a>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION / INICIO (edificios2.webp) -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <img src="edificios2.webp" alt="Fondo Edificios Corporativos" class="w-full h-full object-cover object-center opacity-75 animate-kenburns" />
+            <div class="absolute inset-0 bg-gradient-to-b from-navy-dark/40 via-navy/30 to-navy-dark"></div>
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-mustard/15 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center text-shadow-hero">
+            <span class="inline-block text-xs font-bold tracking-widest text-mustard uppercase bg-navy-dark/70 border border-mustard/50 px-4 py-1.5 rounded-full mb-6 backdrop-blur-md">
+                Despacho Contable & Fiscal
+            </span>
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gradient-gold leading-tight mb-6 drop-shadow-2xl">
+                Tu tranquilidad financiera,<br/>nuestra responsabilidad.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-100 font-medium max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-lg">
+                Proveemos servicios contables, fiscales y financieros de alta precisión para las empresas de La Laguna. Optimiza tu carga tributaria con innovación y ética.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#cotizador" class="w-full sm:w-auto bg-mustard hover:bg-mustard-light text-navy-dark font-bold px-8 py-4 rounded-full text-sm uppercase tracking-wider transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-mustard/30">
+                    Calcular Mi Plan
+                </a>
+                <a href="#servicios" class="w-full sm:w-auto apple-glass hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full text-sm tracking-wider transition-all duration-300">
+                    Explorar Servicios
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS PRINCIPALES -->
+    <section id="servicios" class="py-28 px-6 bg-navy relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">Servicios Especializados</h2>
+                <p class="text-gray-300 text-base md:text-lg max-w-xl mx-auto font-medium">Cobertura contable y fiscal integral para garantizar tu certidumbre.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="apple-glass-card p-6 rounded-3xl transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-mustard/20 border border-mustard/50 flex items-center justify-center text-mustard font-bold mb-4">01</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Contabilidad Mensual</h3>
+                    <p class="text-gray-300 text-sm font-light">Registro y conciliación de tus operaciones financieras para mantener un control claro y transparente.</p>
+                </div>
+                <div class="apple-glass-card p-6 rounded-3xl transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-mustard/20 border border-mustard/50 flex items-center justify-center text-mustard font-bold mb-4">02</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Declaraciones Fiscales</h3>
+                    <p class="text-gray-300 text-sm font-light">Cálculo y presentación puntual de impuestos ante el SAT para evitar requerimientos o multas.</p>
+                </div>
+                <div class="apple-glass-card p-6 rounded-3xl transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-mustard/20 border border-mustard/50 flex items-center justify-center text-mustard font-bold mb-4">03</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Facturación Electrónica</h3>
+                    <p class="text-gray-300 text-sm font-light">Emisión de comprobantes fiscales bajo la versión y normatividad vigente expedida por la autoridad.</p>
+                </div>
+                <div class="apple-glass-card p-6 rounded-3xl transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-mustard/20 border border-mustard/50 flex items-center justify-center text-mustard font-bold mb-4">04</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Gestión de Nóminas</h3>
+                    <p class="text-gray-300 text-sm font-light">Procesamiento de sueldos, cálculo de retenciones e integración con timbrado oficial.</p>
+                </div>
+                <div class="apple-glass-card p-6 rounded-3xl transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-mustard/20 border border-mustard/50 flex items-center justify-center text-mustard font-bold mb-4">05</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Asesoría Fiscal & Adm.</h3>
+                    <p class="text-gray-300 text-sm font-light">Planeación estratégica para optimizar tu carga tributaria cumpliendo 100% con la ley.</p>
+                </div>
+                <div class="apple-glass-card p-6 rounded-3xl transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-mustard/20 border border-mustard/50 flex items-center justify-center text-mustard font-bold mb-4">06</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Devoluciones de Impuestos</h3>
+                    <p class="text-gray-300 text-sm font-light">Gestión de trámites para la recuperación de saldos a favor (ISR, IVA) ante la autoridad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOSOTROS: MISIÓN Y VISIÓN -->
+    <section id="nosotros" class="relative py-28 px-6 bg-navy-dark overflow-hidden">
+        <div class="relative z-10 max-w-6xl mx-auto">
+            <div class="text-center mb-16 text-shadow-hero">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">Líderes en Estrategia Integral</h2>
+                <p class="text-gray-200 text-base md:text-lg max-w-xl mx-auto font-medium">Solidez contable impulsada por innovación digital para tu negocio.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- MISIÓN -->
+                <div class="apple-glass-card rounded-3xl p-8 md:p-10 transition-all duration-500">
+                    <div class="w-12 h-12 rounded-2xl bg-mustard/20 border border-mustard flex items-center justify-center text-mustard mb-6 shadow-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Nuestra Misión</h3>
+                    <p class="text-gray-100 leading-relaxed font-normal">
+                        Proveer servicios contables, fiscales y financieros de alta precisión, garantizando el cumplimiento normativo de las empresas laguneras y optimizando su carga tributaria para impulsar su rentabilidad y tranquilidad patrimonial.
+                    </p>
+                </div>
+
+                <!-- VISIÓN -->
+                <div class="apple-glass-card rounded-3xl p-8 md:p-10 transition-all duration-500">
+                    <div class="w-12 h-12 rounded-2xl bg-mustard/20 border border-mustard flex items-center justify-center text-mustard mb-6 shadow-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Nuestra Visión</h3>
+                    <p class="text-gray-100 leading-relaxed font-normal">
+                        Consolidarnos como un despacho contable líder en La Laguna y referente en asesoría estratégica integral, reconocido por la innovación digital en nuestros procesos, la ética profesional y el crecimiento sostenido de las empresas que asesoramos.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FOTO DE EQUIPO (5personasofi.jpg) -->
+            <div class="mt-16 apple-glass-card rounded-3xl p-8 md:p-12 flex flex-col lg:flex-row items-center gap-10">
+                <div class="w-full lg:w-1/2 overflow-hidden rounded-2xl border border-mustard/30 shadow-2xl animate-float">
+                    <img src="5personasofi.jpg" alt="Equipo de SYA Asesoría Contable" class="w-full h-80 object-cover object-center transform hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div class="w-full lg:w-1/2">
+                    <span class="text-xs uppercase tracking-widest text-mustard font-bold mb-2 block">Compromiso Lagunero</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">Un equipo dedicado a tu crecimiento</h3>
+                    <p class="text-gray-200 font-light mb-6 leading-relaxed">
+                        Combinamos experiencia técnica, calidez humana y herramientas digitales para resolver las necesidades fiscales más complejas de tu negocio.
+                    </p>
+                    <a href="https://wa.me/528712876149" target="_blank" class="inline-flex items-center text-mustard font-bold text-sm hover:underline gap-2">
+                        Hablar con un especialista
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRECIOS Y PAQUETES (edificio1.webp EN EL FONDO) -->
+    <section id="precios" class="py-28 px-6 bg-navy-dark relative overflow-hidden">
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <img src="edificio1.webp" alt="Arquitectura Corporativa Fondo Precios" class="w-full h-full object-cover opacity-65 animate-kenburns" />
+            <div class="absolute inset-0 bg-gradient-to-r from-navy-dark/70 via-navy-dark/50 to-navy-dark/70"></div>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto">
+            <div class="text-center mb-12 text-shadow-hero">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">Planes y Tarifas</h2>
+                <p class="text-gray-200 text-base md:text-lg max-w-xl mx-auto font-medium">Transparencia absoluta diseñada a la medida de la escala de tu negocio.</p>
+
+                <div class="inline-flex p-1.5 rounded-full bg-navy/80 backdrop-blur-md border border-white/20 mt-8 shadow-xl">
+                    <button id="btn-paquetes" onclick="switchPricing('paquetes')" class="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 bg-mustard text-navy-dark shadow-md">
+                        Paquetes Mensuales
+                    </button>
+                    <button id="btn-individuales" onclick="switchPricing('individuales')" class="px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white">
+                        Tabla Detallada por Servicio
+                    </button>
+                </div>
+            </div>
+
+            <!-- PAQUETES EN FORMA DE LISTA DETALLADA -->
+            <div id="view-paquetes" class="tab-content grid md:grid-cols-3 gap-8">
+                <!-- PAQUETE 1: EMPRESA CHICA -->
+                <div class="apple-glass-card p-8 rounded-3xl flex flex-col justify-between border-t-2 border-t-gray-400">
+                    <div>
+                        <span class="text-xs uppercase font-bold tracking-widest text-gray-300 mb-2 block">Inicio Empresarial</span>
+                        <h3 class="text-2xl font-bold text-white">Empresa Chica</h3>
+                        <div class="my-6">
+                            <span class="text-4xl font-extrabold text-white">$2,500</span>
+                            <span class="text-gray-300 text-xs"> / mes + IVA</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-200 mb-8 font-light">
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Contabilidad mensual integral</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Presentación de declaraciones mensuales</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Emisión y gestión de facturación electrónica</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/528712876149?text=Hola,%20me%20interesa%20el%20Paquete%20Empresa%20Chica" target="_blank" class="w-full text-center py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs uppercase tracking-wider transition-all">Contratar</a>
+                </div>
+
+                <!-- PAQUETE 2: EMPRESA MEDIANA -->
+                <div class="apple-glass-card p-8 rounded-3xl flex flex-col justify-between border-2 border-mustard relative shadow-2xl">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-mustard text-navy-dark text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Más Popular</span>
+                    <div>
+                        <span class="text-xs uppercase font-bold tracking-widest text-mustard mb-2 block">Crecimiento Sostenido</span>
+                        <h3 class="text-2xl font-bold text-white">Empresa Mediana</h3>
+                        <div class="my-6">
+                            <span class="text-4xl font-extrabold text-white">$6,000</span>
+                            <span class="text-gray-300 text-xs"> / mes + IVA</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-200 mb-8 font-light">
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Contabilidad mensual integral</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Presentación de declaraciones mensuales</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Facturación electrónica</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Procesamiento y timbrado de nómina</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/528712876149?text=Hola,%20me%20interesa%20el%20Paquete%20Empresa%20Mediana" target="_blank" class="w-full text-center py-3 rounded-full bg-mustard hover:bg-mustard-light text-navy-dark font-bold text-xs uppercase tracking-wider transition-all">Contratar</a>
+                </div>
+
+                <!-- PAQUETE 3: GRAN CONTRIBUYENTE -->
+                <div class="apple-glass-card p-8 rounded-3xl flex flex-col justify-between border-t-2 border-t-gray-400">
+                    <div>
+                        <span class="text-xs uppercase font-bold tracking-widest text-gray-300 mb-2 block">Corporativo & Escala</span>
+                        <h3 class="text-2xl font-bold text-white">Gran Contribuyente</h3>
+                        <div class="my-6">
+                            <span class="text-4xl font-extrabold text-white">$14,000</span>
+                            <span class="text-gray-300 text-xs"> / mes + IVA</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-200 mb-8 font-light">
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Contabilidad mensual integral</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Presentación de declaraciones mensuales</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Facturación electrónica</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Procesamiento de nóminas complejas</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <svg class="w-4 h-4 text-mustard shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                <span>Asesoría fiscal personalizada y estratégica</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="https://wa.me/528712876149?text=Hola,%20me%20interesa%20el%20Paquete%20Gran%20Contribuyente" target="_blank" class="w-full text-center py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs uppercase tracking-wider transition-all">Contratar</a>
+                </div>
+            </div>
+
+            <!-- TABLA DETALLADA -->
+            <div id="view-individuales" class="tab-content hidden overflow-x-auto apple-glass-card rounded-3xl p-6">
+                <table class="w-full text-left text-sm text-gray-200 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/20 text-xs font-semibold uppercase text-mustard tracking-wider">
+                            <th class="py-4 px-4">Servicio</th>
+                            <th class="py-4 px-4 text-center">Empresa Chica</th>
+                            <th class="py-4 px-4 text-center">Empresa Mediana</th>
+                            <th class="py-4 px-4 text-center">Gran Contribuyente</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/10 font-normal">
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-white">Contabilidad mensual</td>
+                            <td class="py-4 px-4 text-center">$1,500</td>
+                            <td class="py-4 px-4 text-center">$3,500</td>
+                            <td class="py-4 px-4 text-center">$7,000</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-white">Declaraciones mensuales</td>
+                            <td class="py-4 px-4 text-center">$700</td>
+                            <td class="py-4 px-4 text-center">$1,500</td>
+                            <td class="py-4 px-4 text-center">$3,000</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-white">Declaración anual</td>
+                            <td class="py-4 px-4 text-center">$2,000</td>
+                            <td class="py-4 px-4 text-center">$4,000</td>
+                            <td class="py-4 px-4 text-center">$8,000</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-white">Asesoría fiscal</td>
+                            <td class="py-4 px-4 text-center">$500</td>
+                            <td class="py-4 px-4 text-center">$1,000</td>
+                            <td class="py-4 px-4 text-center">$2,500</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-white">Facturación electrónica</td>
+                            <td class="py-4 px-4 text-center">$300</td>
+                            <td class="py-4 px-4 text-center">$600</td>
+                            <td class="py-4 px-4 text-center">$1,200</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-white">Nómina</td>
+                            <td class="py-4 px-4 text-center">$800</td>
+                            <td class="py-4 px-4 text-center">$1,500</td>
+                            <td class="py-4 px-4 text-center">$3,000</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-white">Trámites ante el SAT</td>
+                            <td class="py-4 px-4 text-center">$500</td>
+                            <td class="py-4 px-4 text-center">$1,000</td>
+                            <td class="py-4 px-4 text-center">$2,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-xs text-gray-300 mt-4 text-center italic">* El precio puede variar dependiendo de la complejidad y documentación de la empresa.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COTIZADOR (Edificios3.jpg) -->
+    <section id="cotizador" class="py-28 px-6 bg-navy relative overflow-hidden">
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <img src="Edificios3.jpg" alt="Rascacielos Perspectiva Crecimiento" class="w-full h-full object-cover object-center opacity-70 animate-kenburns" />
+            <div class="absolute inset-0 bg-gradient-to-b from-navy-dark/50 via-navy/40 to-navy-dark/70"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <div class="text-center mb-12 text-shadow-hero">
+                <span class="text-xs uppercase font-bold tracking-widest text-mustard mb-2 block">Herramienta Interactiva</span>
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">Configura tu Cotización</h2>
+                <p class="text-gray-200 text-base md:text-lg font-medium">Selecciona la escala de tu empresa y los servicios que requieres.</p>
+            </div>
+
+            <div class="apple-glass-card rounded-3xl p-8 md:p-12 shadow-2xl border border-mustard/40">
+                <div class="mb-8">
+                    <label class="block text-sm font-bold text-white mb-4 uppercase tracking-wider">1. Tipo de Empresa</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <button type="button" onclick="setCompanyType('chica')" id="type-chica" class="company-btn active py-4 px-4 rounded-2xl border border-mustard bg-mustard/20 text-white text-center font-bold transition-all shadow-md">
+                            Chica
+                        </button>
+                        <button type="button" onclick="setCompanyType('mediana')" id="type-mediana" class="company-btn py-4 px-4 rounded-2xl border border-white/20 bg-navy-light/80 text-gray-200 text-center font-medium transition-all hover:border-white/50">
+                            Mediana
+                        </button>
+                        <button type="button" onclick="setCompanyType('gran')" id="type-gran" class="company-btn py-4 px-4 rounded-2xl border border-white/20 bg-navy-light/80 text-gray-200 text-center font-medium transition-all hover:border-white/50">
+                            Gran Contribuyente
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-10">
+                    <label class="block text-sm font-bold text-white mb-4 uppercase tracking-wider">2. Selecciona los Servicios Requeridos</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label class="flex items-center gap-3 p-4 rounded-2xl bg-navy-light/70 border border-white/20 cursor-pointer hover:border-mustard/50 transition-all">
+                            <input type="checkbox" onchange="calculateTotal()" value="contabilidad" class="service-checkbox w-5 h-5 rounded accent-mustard">
+                            <span class="text-sm font-medium text-white">Contabilidad Mensual</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-4 rounded-2xl bg-navy-light/70 border border-white/20 cursor-pointer hover:border-mustard/50 transition-all">
+                            <input type="checkbox" onchange="calculateTotal()" value="declaraciones" class="service-checkbox w-5 h-5 rounded accent-mustard">
+                            <span class="text-sm font-medium text-white">Declaraciones Mensuales</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-4 rounded-2xl bg-navy-light/70 border border-white/20 cursor-pointer hover:border-mustard/50 transition-all">
+                            <input type="checkbox" onchange="calculateTotal()" value="facturacion" class="service-checkbox w-5 h-5 rounded accent-mustard">
+                            <span class="text-sm font-medium text-white">Facturación Electrónica</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-4 rounded-2xl bg-navy-light/70 border border-white/20 cursor-pointer hover:border-mustard/50 transition-all">
+                            <input type="checkbox" onchange="calculateTotal()" value="nomina" class="service-checkbox w-5 h-5 rounded accent-mustard">
+                            <span class="text-sm font-medium text-white">Nómina</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-4 rounded-2xl bg-navy-light/70 border border-white/20 cursor-pointer hover:border-mustard/50 transition-all">
+                            <input type="checkbox" onchange="calculateTotal()" value="asesoria" class="service-checkbox w-5 h-5 rounded accent-mustard">
+                            <span class="text-sm font-medium text-white">Asesoría Fiscal</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-4 rounded-2xl bg-navy-light/70 border border-white/20 cursor-pointer hover:border-mustard/50 transition-all">
+                            <input type="checkbox" onchange="calculateTotal()" value="tramites" class="service-checkbox w-5 h-5 rounded accent-mustard">
+                            <span class="text-sm font-medium text-white">Trámites ante el SAT</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div>
+                        <span class="text-xs text-gray-300 block uppercase font-semibold tracking-wider">Estimado Aproximado Mensual</span>
+                        <div class="text-4xl font-extrabold text-gradient-gold" id="total-display">$0 <span class="text-xs text-gray-300 font-normal">MXN</span></div>
+                    </div>
+                    <button onclick="sendWhatsappQuote()" class="w-full md:w-auto bg-mustard hover:bg-mustard-light text-navy-dark px-8 py-4 rounded-full font-bold text-xs uppercase tracking-wider transition-all transform hover:scale-105 shadow-xl shadow-mustard/20 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.94 9.4 0 001.353 5.011L2 22l5.12-1.341a9.94 9.94 0 004.891 1.28h.004c5.507 0 9.99-4.479 9.99-9.985A9.95 9.95 0 0012.012 2zm5.72 14.195c-.242.682-1.405 1.3-1.956 1.385-.503.078-1.157.112-1.865-.114-.43-.137-1.025-.333-1.832-.682-3.39-1.468-5.602-4.908-5.772-5.138-.17-.23-1.38-1.836-1.38-3.502 0-1.666.868-2.486 1.176-2.825.308-.338.673-.423.898-.423.224 0 .448.003.645.013.21.01.49-.08.766.58.283.678.96 2.348 1.042 2.518.083.17.139.368.028.59-.112.223-.168.363-.335.562-.168.2-.352.447-.503.6-.168.168-.344.351-.148.687.197.336.874 1.442 1.877 2.336 1.29 1.15 2.38 1.508 2.716 1.676.336.168.532.14.729-.084.197-.224.84-0.98 1.064-1.316.224-.336.448-.28.756-.168.308.112 1.957.923 2.293 1.091.336.168.56.252.645.392.084.14.084.812-.158 1.494z"/></svg>
+                        Enviar Cotización a WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / CONTACTO -->
+    <footer class="bg-navy-dark pt-20 pb-12 border-t border-white/10">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+            <div>
+                <div class="logo-circle-container w-12 h-12 rounded-full flex items-center justify-center p-1.5 overflow-hidden mb-4">
+                    <img id="footer-logo-img" 
+                         src="Imagen1conta_2.png" 
+                         onerror="if (this.src.indexOf('Imagen1conta.png') === -1) { this.src='Imagen1conta.png'; }" 
+                         alt="SYA Logo" 
+                         class="w-full h-full object-contain" />
+                </div>
+                <p class="text-gray-300 text-sm font-light mb-6">
+                    Despacho contable líder en La Laguna. Garantizamos tu tranquilidad fiscal con innovación y rigor técnico.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Contacto Directo</h4>
+                <ul class="space-y-3 text-sm text-gray-300 font-light">
+                    <li>
+                        <strong class="text-white font-medium">WhatsApp / Teléfono:</strong><br/>
+                        <a href="https://wa.me/528712876149" class="hover:text-mustard transition-colors">871 287 6149</a> / 
+                        <a href="https://wa.me/528715524898" class="hover:text-mustard transition-colors">871 552 4898</a>
+                    </li>
+                    <li>
+                        <strong class="text-white font-medium">Correo Electrónico:</strong><br/>
+                        <a href="mailto:syaasesoriacontableyfiscal@gmail.com" class="hover:text-mustard transition-colors">syaasesoriacontableyfiscal@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Síguenos</h4>
+                <a href="https://www.instagram.com/syaconta?rpxt=dndkM2hib3RqMGM=" target="_blank" class="inline-flex items-center gap-2 apple-glass px-5 py-3 rounded-2xl text-sm hover:text-mustard transition-colors">
+                    <svg class="w-5 h-5 text-mustard" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    @syaconta en Instagram
+                </a>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 pt-8 border-t border-white/5 text-center text-xs text-gray-400 font-light">
+            © 2026 SYA Asesoría Contable y Fiscal. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT DE DINAMISMO Y LÓGICA DE SCROLL -->
+    <script>
+        const mainNav = document.getElementById('mainNav');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+
+            // Muestra u oculta botón "Ir arriba"
+            if (currentScrollY > 400) {
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.add('opacity-100', 'pointer-events-auto');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+
+            // LÓGICA DE MENÚ: Permanece colapsado en scroll hacia abajo/arriba.
+            // Solo se despliega al llegar al inicio de la página (o vía :hover CSS)
+            if (currentScrollY > 150) {
+                mainNav.classList.add('collapsed');
+                mainNav.classList.remove('w-full');
+            } else {
+                // En la parte superior (Inicio) siempre está desplegado
+                mainNav.classList.remove('collapsed');
+                mainNav.classList.add('w-full');
+            }
+        });
+
+        // CAMBIO DE PESTAÑAS PRECIOS
+        function switchPricing(tab) {
+            const btnPaquetes = document.getElementById('btn-paquetes');
+            const btnIndividuales = document.getElementById('btn-individuales');
+            const viewPaquetes = document.getElementById('view-paquetes');
+            const viewIndividuales = document.getElementById('view-individuales');
+
+            if (tab === 'paquetes') {
+                btnPaquetes.className = "px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 bg-mustard text-navy-dark shadow-md";
+                btnIndividuales.className = "px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white";
+                viewPaquetes.classList.remove('hidden');
+                viewIndividuales.classList.add('hidden');
+            } else {
+                btnIndividuales.className = "px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 bg-mustard text-navy-dark shadow-md";
+                btnPaquetes.className = "px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 text-gray-300 hover:text-white";
+                viewIndividuales.classList.remove('hidden');
+                viewPaquetes.classList.add('hidden');
+            }
+        }
+
+        // COTIZADOR INTERACTIVO
+        const pricingMatrix = {
+            chica: { contabilidad: 1500, declaraciones: 700, facturacion: 300, nomina: 800, asesoria: 500, tramites: 500 },
+            mediana: { contabilidad: 3500, declaraciones: 1500, facturacion: 600, nomina: 1500, asesoria: 1000, tramites: 1000 },
+            gran: { contabilidad: 7000, declaraciones: 3000, facturacion: 1200, nomina: 3000, asesoria: 2500, tramites: 2000 }
+        };
+
+        let selectedCompanyType = 'chica';
+
+        function setCompanyType(type) {
+            selectedCompanyType = type;
+            const buttons = document.querySelectorAll('.company-btn');
+            buttons.forEach(btn => {
+                btn.className = "company-btn py-4 px-4 rounded-2xl border border-white/20 bg-navy-light/80 text-gray-200 text-center font-medium transition-all hover:border-white/50";
+            });
+
+            const activeBtn = document.getElementById(`type-${type}`);
+            activeBtn.className = "company-btn active py-4 px-4 rounded-2xl border border-mustard bg-mustard/20 text-white text-center font-bold transition-all shadow-md";
+            
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const checkboxes = document.querySelectorAll('.service-checkbox:checked');
+            let total = 0;
+
+            checkboxes.forEach(cb => {
+                const serviceKey = cb.value;
+                total += pricingMatrix[selectedCompanyType][serviceKey] || 0;
+            });
+
+            document.getElementById('total-display').innerHTML = `$${total.toLocaleString('es-MX')} <span class="text-xs text-gray-300 font-normal">MXN</span>`;
+        }
+
+        function sendWhatsappQuote() {
+            const checkboxes = document.querySelectorAll('.service-checkbox:checked');
+            let servicesList = [];
+            checkboxes.forEach(cb => {
+                servicesList.push(cb.parentElement.textContent.trim());
+            });
+
+            if (servicesList.length === 0) {
+                alert('Por favor selecciona al menos un servicio para cotizar.');
+                return;
+            }
+
+            const totalText = document.getElementById('total-display').textContent;
+            const text = `Hola, me gustaría solicitar una cotización para una *Empresa ${selectedCompanyType.toUpperCase()}*.\n\nServicios seleccionados:\n- ${servicesList.join('\n- ')}\n\nEstimado total aproximado: *${totalText}*`;
+
+            const whatsappUrl = `https://wa.me/528712876149?text=${encodeURIComponent(text)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
