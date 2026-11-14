@@ -51,7 +51,6 @@
         }
     </script>
     <style>
-        /* Tipografía y suavizado de Apple */
         body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -59,7 +58,6 @@
             color: #F3F4F6;
         }
 
-        /* Glassmorphism de Apple con alta transparencia */
         .apple-glass {
             background: rgba(10, 25, 47, 0.65);
             backdrop-filter: blur(20px);
@@ -81,7 +79,6 @@
             transform: translateY(-4px);
         }
 
-        /* Contenedor circular emblemático de Apple para el Logo */
         .logo-circle-container {
             background: #FFFFFF;
             border: 2px solid rgba(212, 175, 55, 0.7);
@@ -95,7 +92,18 @@
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
         }
 
-        /* ANIMACIONES Y TRANSICIONES DINÁMICAS Y FLUIDAS (0.85s / GPU-ACCELERATED) */
+        .hero-logo-badge {
+            background: #FFFFFF;
+            border: 3px solid #D4AF37;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.45), 0 20px 45px rgba(0, 0, 0, 0.7);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s ease;
+        }
+
+        .hero-logo-badge:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 65px rgba(212, 175, 55, 0.75), 0 25px 50px rgba(0, 0, 0, 0.8);
+        }
+
         .nav-collapsible {
             transition: max-width 0.85s cubic-bezier(0.22, 1, 0.36, 1),
                         padding 0.85s cubic-bezier(0.22, 1, 0.36, 1),
@@ -115,7 +123,6 @@
             will-change: max-width, opacity, transform;
         }
 
-        /* Animación suave para las palabras individuales conforme se abre el menú */
         .nav-link-item {
             display: inline-block;
             transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
@@ -126,7 +133,6 @@
             will-change: opacity, transform;
         }
 
-        /* Estado Colapsado */
         nav.collapsed .nav-links-container {
             max-width: 0px !important;
             opacity: 0 !important;
@@ -142,7 +148,6 @@
             transition-delay: 0s;
         }
 
-        /* Expansión ultra-fluida en Hover */
         nav.collapsed:hover .nav-links-container {
             max-width: 650px !important;
             opacity: 1 !important;
@@ -156,14 +161,12 @@
             transition-delay: calc(var(--item-index, 0) * 0.06s + 0.15s);
         }
 
-        /* Efectos de brillo en degradado estilo Apple */
         .text-gradient-gold {
             background: linear-gradient(135deg, #FFFFFF 0%, #F3E5AB 50%, #D4AF37 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Sombra para legibilidad sobre imágenes */
         .text-shadow-hero {
             text-shadow: 0 4px 20px rgba(0, 0, 0, 0.85);
         }
@@ -175,7 +178,7 @@
 </head>
 <body class="font-sans antialiased text-gray-100 overflow-x-hidden selection:bg-mustard selection:text-navy-dark">
 
-    <!-- BOTÓN FLOTANTE PARA SUBIR RÁPIDO (BACK TO TOP) -->
+    <!-- BOTÓN FLOTANTE PARA SUBIR RÁPIDO -->
     <button id="backToTopBtn" 
             onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
             aria-label="Volver arriba"
@@ -185,32 +188,28 @@
         </svg>
     </button>
 
-    <!-- NAV BAR FLOTANTE DINÁMICA ESTILO APPLE -->
+    <!-- NAV BAR FLOTANTE -->
     <header class="fixed top-0 left-0 right-0 z-50 px-4 py-3 flex justify-center pointer-events-none">
-        <nav id="mainNav" class="pointer-events-auto nav-collapsible apple-glass rounded-full px-5 py-2.5 flex items-center justify-between shadow-2xl gap-4 max-w-6xl w-full">
-            
-            <!-- CONTENEDOR LOGO + NOMBRE -->
-            <a href="#inicio" class="flex items-center gap-3 group shrink-0">
-                <div class="logo-circle-container w-11 h-11 rounded-full flex items-center justify-center p-1.5 overflow-hidden">
+        <nav id="mainNav" class="pointer-events-auto nav-collapsible apple-glass rounded-full px-5 py-2 flex items-center justify-between shadow-2xl gap-4 max-w-6xl w-full">
+            <a href="#inicio" class="flex items-center gap-3.5 group shrink-0">
+                <div class="logo-circle-container w-14 h-14 rounded-full flex items-center justify-center p-1.5 overflow-hidden">
                     <img id="logo-img" 
-                         src="Imagen1conta_2.png" 
-                         onerror="if (this.src.indexOf('Imagen1conta.png') === -1) { this.src='Imagen1conta.png'; } else { this.style.display='none'; document.getElementById('svg-fallback-logo').classList.remove('hidden'); }" 
+                         src="Imagen1conta.png" 
+                         onerror="if (this.src.indexOf('Imagen1conta_2.png') === -1) { this.src='Imagen1conta_2.png'; } else { this.style.display='none'; document.getElementById('svg-fallback-logo').classList.remove('hidden'); }" 
                          alt="SYA Logo" 
                          class="w-full h-full object-contain" />
                     
                     <div id="svg-fallback-logo" class="hidden flex items-center justify-center">
-                        <svg class="w-7 h-7" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-8 h-8" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M15 50 C5 35 15 15 35 15 C55 15 45 45 25 50 C10 55 15 70 35 70 C45 70 55 60 55 50" stroke="#0A192F" stroke-width="9" stroke-linecap="round"/>
                             <path d="M35 25 L60 65 L80 15" stroke="#0A192F" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M50 65 L70 35 L90 65" stroke="#D4AF37" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
                 </div>
-
-                <span class="font-bold text-lg tracking-tight text-white hidden sm:inline">SYA <span class="text-mustard font-medium text-xs tracking-widest uppercase block sm:inline">Asesoría</span></span>
+                <span class="font-bold text-xl tracking-tight text-white hidden sm:inline">SYA <span class="text-mustard font-medium text-xs tracking-widest uppercase block sm:inline">Asesoría</span></span>
             </a>
 
-            <!-- ENLACES DE NAVEGACIÓN DESPLEGABLES -->
             <div class="nav-links-container hidden md:flex items-center gap-8 text-sm font-bold text-gray-100">
                 <a href="#inicio" class="nav-link-item hover:text-mustard transition-colors duration-300" style="--item-index: 1;">Inicio</a>
                 <a href="#servicios" class="nav-link-item hover:text-mustard transition-colors duration-300" style="--item-index: 2;">Servicios</a>
@@ -219,38 +218,60 @@
                 <a href="#cotizador" class="nav-link-item hover:text-mustard transition-colors duration-300" style="--item-index: 5;">Cotizador</a>
             </div>
 
-            <!-- BOTÓN CONTACTO -->
-            <a href="https://wa.me/528712876149" target="_blank" class="shrink-0 bg-mustard hover:bg-mustard-light text-navy-dark px-5 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-300 hover:shadow-lg hover:shadow-mustard/30">
+            <a href="https://wa.me/528712876149" target="_blank" class="shrink-0 bg-mustard hover:bg-mustard-light text-navy-dark px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-300 hover:shadow-lg hover:shadow-mustard/30">
                 Contacto
             </a>
         </nav>
     </header>
 
-    <!-- HERO SECTION / INICIO (edificios2.webp) -->
-    <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
-        <div class="absolute inset-0 z-0 overflow-hidden">
-            <img src="edificios2.webp" alt="Fondo Edificios Corporativos" class="w-full h-full object-cover object-center opacity-75 animate-kenburns" />
-            <div class="absolute inset-0 bg-gradient-to-b from-navy-dark/40 via-navy/30 to-navy-dark"></div>
-            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-mustard/15 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
+    <!-- HERO SECTION CON EL MISMO DISEÑO DE FONDO QUE PLANES Y TARIFAS -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-28 pb-16 overflow-hidden bg-navy-dark">
+        
+        <!-- FONDO IGUAL AL DE PLANES Y TARIFAS (nítido, opacity-65 y velo suave) -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <img src="edificios2.webp" 
+                 alt="Fondo Edificios Corporativos" 
+                 class="w-full h-full object-cover object-center opacity-65 animate-kenburns" />
+            <img src="Edificios3.jpg" 
+                 alt="Fondo Edificios Corporativos Perspectiva" 
+                 class="absolute inset-0 w-full h-full object-cover object-center opacity-35 mix-blend-screen animate-kenburns" />
+            <div class="absolute inset-0 bg-gradient-to-r from-navy-dark/70 via-navy-dark/50 to-navy-dark/70"></div>
         </div>
 
-        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center text-shadow-hero">
-            <span class="inline-block text-xs font-bold tracking-widest text-mustard uppercase bg-navy-dark/70 border border-mustard/50 px-4 py-1.5 rounded-full mb-6 backdrop-blur-md">
-                Despacho Contable & Fiscal
-            </span>
-            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gradient-gold leading-tight mb-6 drop-shadow-2xl">
-                Tu tranquilidad financiera,<br/>nuestra responsabilidad.
-            </h1>
-            <p class="text-lg md:text-xl text-gray-100 font-medium max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-lg">
-                Proveemos servicios contables, fiscales y financieros de alta precisión para las empresas de La Laguna. Optimiza tu carga tributaria con innovación y ética.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#cotizador" class="w-full sm:w-auto bg-mustard hover:bg-mustard-light text-navy-dark font-bold px-8 py-4 rounded-full text-sm uppercase tracking-wider transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-mustard/30">
-                    Calcular Mi Plan
-                </a>
-                <a href="#servicios" class="w-full sm:w-auto apple-glass hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full text-sm tracking-wider transition-all duration-300">
-                    Explorar Servicios
-                </a>
+        <div class="relative z-10 max-w-6xl mx-auto px-6 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                
+                <!-- LOGO EN GRANDE A LA IZQUIERDA -->
+                <div class="lg:col-span-5 flex justify-center lg:justify-start">
+                    <div class="w-60 h-60 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full hero-logo-badge flex items-center justify-center p-7 overflow-hidden animate-float">
+                        <img src="Imagen1conta.png" 
+                             onerror="if (this.src.indexOf('Imagen1conta_2.png') === -1) { this.src='Imagen1conta_2.png'; }" 
+                             alt="SYA Asesoría Contable y Fiscal" 
+                             class="w-full h-full object-contain" />
+                    </div>
+                </div>
+
+                <!-- TEXTO Y BOTONES -->
+                <div class="lg:col-span-7 text-center lg:text-left text-shadow-hero">
+                    <span class="inline-block text-xs font-bold tracking-widest text-mustard uppercase bg-navy/80 border border-mustard/50 px-4 py-1.5 rounded-full mb-5 backdrop-blur-md">
+                        Despacho Contable & Fiscal
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-gradient-gold leading-tight mb-6 drop-shadow-2xl">
+                        Tu tranquilidad financiera,<br/>nuestra responsabilidad.
+                    </h1>
+                    <p class="text-base sm:text-lg md:text-xl text-gray-100 font-medium max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed drop-shadow-lg">
+                        Proveemos servicios contables, fiscales y financieros de alta precisión para las empresas de La Laguna. Optimiza tu carga tributaria con innovación y ética.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+                        <a href="#cotizador" class="w-full sm:w-auto bg-mustard hover:bg-mustard-light text-navy-dark font-bold px-8 py-4 rounded-full text-sm uppercase tracking-wider transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-mustard/30 text-center">
+                            Calcular Mi Plan
+                        </a>
+                        <a href="#servicios" class="w-full sm:w-auto apple-glass hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-full text-sm tracking-wider transition-all duration-300 text-center border border-white/30 shadow-lg">
+                            Explorar Servicios
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -298,7 +319,7 @@
         </div>
     </section>
 
-    <!-- NOSOTROS: MISIÓN Y VISIÓN -->
+    <!-- NOSOTROS -->
     <section id="nosotros" class="relative py-28 px-6 bg-navy-dark overflow-hidden">
         <div class="relative z-10 max-w-6xl mx-auto">
             <div class="text-center mb-16 text-shadow-hero">
@@ -350,7 +371,7 @@
         </div>
     </section>
 
-    <!-- PRECIOS Y PAQUETES (edificio1.webp EN EL FONDO) -->
+    <!-- PRECIOS Y PAQUETES -->
     <section id="precios" class="py-28 px-6 bg-navy-dark relative overflow-hidden">
         <div class="absolute inset-0 z-0 overflow-hidden">
             <img src="edificio1.webp" alt="Arquitectura Corporativa Fondo Precios" class="w-full h-full object-cover opacity-65 animate-kenburns" />
@@ -372,9 +393,8 @@
                 </div>
             </div>
 
-            <!-- PAQUETES EN FORMA DE LISTA DETALLADA -->
             <div id="view-paquetes" class="tab-content grid md:grid-cols-3 gap-8">
-                <!-- PAQUETE 1: EMPRESA CHICA -->
+                <!-- PAQUETE 1 -->
                 <div class="apple-glass-card p-8 rounded-3xl flex flex-col justify-between border-t-2 border-t-gray-400">
                     <div>
                         <span class="text-xs uppercase font-bold tracking-widest text-gray-300 mb-2 block">Inicio Empresarial</span>
@@ -401,7 +421,7 @@
                     <a href="https://wa.me/528712876149?text=Hola,%20me%20interesa%20el%20Paquete%20Empresa%20Chica" target="_blank" class="w-full text-center py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs uppercase tracking-wider transition-all">Contratar</a>
                 </div>
 
-                <!-- PAQUETE 2: EMPRESA MEDIANA -->
+                <!-- PAQUETE 2 -->
                 <div class="apple-glass-card p-8 rounded-3xl flex flex-col justify-between border-2 border-mustard relative shadow-2xl">
                     <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-mustard text-navy-dark text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Más Popular</span>
                     <div>
@@ -433,7 +453,7 @@
                     <a href="https://wa.me/528712876149?text=Hola,%20me%20interesa%20el%20Paquete%20Empresa%20Mediana" target="_blank" class="w-full text-center py-3 rounded-full bg-mustard hover:bg-mustard-light text-navy-dark font-bold text-xs uppercase tracking-wider transition-all">Contratar</a>
                 </div>
 
-                <!-- PAQUETE 3: GRAN CONTRIBUYENTE -->
+                <!-- PAQUETE 3 -->
                 <div class="apple-glass-card p-8 rounded-3xl flex flex-col justify-between border-t-2 border-t-gray-400">
                     <div>
                         <span class="text-xs uppercase font-bold tracking-widest text-gray-300 mb-2 block">Corporativo & Escala</span>
@@ -530,7 +550,7 @@
         </div>
     </section>
 
-    <!-- COTIZADOR (Edificios3.jpg) -->
+    <!-- COTIZADOR -->
     <section id="cotizador" class="py-28 px-6 bg-navy relative overflow-hidden">
         <div class="absolute inset-0 z-0 overflow-hidden">
             <img src="Edificios3.jpg" alt="Rascacielos Perspectiva Crecimiento" class="w-full h-full object-cover object-center opacity-70 animate-kenburns" />
@@ -604,14 +624,14 @@
         </div>
     </section>
 
-    <!-- FOOTER / CONTACTO -->
+    <!-- FOOTER -->
     <footer class="bg-navy-dark pt-20 pb-12 border-t border-white/10">
         <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             <div>
-                <div class="logo-circle-container w-12 h-12 rounded-full flex items-center justify-center p-1.5 overflow-hidden mb-4">
+                <div class="logo-circle-container w-20 h-20 rounded-full flex items-center justify-center p-2 overflow-hidden mb-4">
                     <img id="footer-logo-img" 
-                         src="Imagen1conta_2.png" 
-                         onerror="if (this.src.indexOf('Imagen1conta.png') === -1) { this.src='Imagen1conta.png'; }" 
+                         src="Imagen1conta.png" 
+                         onerror="if (this.src.indexOf('Imagen1conta_2.png') === -1) { this.src='Imagen1conta_2.png'; }" 
                          alt="SYA Logo" 
                          class="w-full h-full object-contain" />
                 </div>
@@ -649,7 +669,6 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT DE DINAMISMO Y LÓGICA DE SCROLL -->
     <script>
         const mainNav = document.getElementById('mainNav');
         const backToTopBtn = document.getElementById('backToTopBtn');
@@ -657,7 +676,6 @@
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
 
-            // Muestra u oculta botón "Ir arriba"
             if (currentScrollY > 400) {
                 backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
                 backToTopBtn.classList.add('opacity-100', 'pointer-events-auto');
@@ -666,19 +684,15 @@
                 backToTopBtn.classList.remove('opacity-100', 'pointer-events-auto');
             }
 
-            // LÓGICA DE MENÚ: Permanece colapsado en scroll hacia abajo/arriba.
-            // Solo se despliega al llegar al inicio de la página (o vía :hover CSS)
             if (currentScrollY > 150) {
                 mainNav.classList.add('collapsed');
                 mainNav.classList.remove('w-full');
             } else {
-                // En la parte superior (Inicio) siempre está desplegado
                 mainNav.classList.remove('collapsed');
                 mainNav.classList.add('w-full');
             }
         });
 
-        // CAMBIO DE PESTAÑAS PRECIOS
         function switchPricing(tab) {
             const btnPaquetes = document.getElementById('btn-paquetes');
             const btnIndividuales = document.getElementById('btn-individuales');
@@ -698,7 +712,6 @@
             }
         }
 
-        // COTIZADOR INTERACTIVO
         const pricingMatrix = {
             chica: { contabilidad: 1500, declaraciones: 700, facturacion: 300, nomina: 800, asesoria: 500, tramites: 500 },
             mediana: { contabilidad: 3500, declaraciones: 1500, facturacion: 600, nomina: 1500, asesoria: 1000, tramites: 1000 },
